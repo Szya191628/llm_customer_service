@@ -1,0 +1,97 @@
+[
+  {
+    "input": "hello",
+    "time_ms": 727.2,
+    "response": ""
+  },
+  {
+    "input": "hi",
+    "time_ms": 760.6,
+    "response": ""
+  },
+  {
+    "input": "在吗",
+    "time_ms": 754.7,
+    "response": ""
+  },
+  {
+    "input": "iPhone 15",
+    "time_ms": 822.8,
+    "response": ""
+  },
+  {
+    "input": "戴尔电脑",
+    "time_ms": 694.5,
+    "response": ""
+  },
+  {
+    "input": "小米电视",
+    "time_ms": 745.1,
+    "response": ""
+  },
+  {
+    "input": "华为手表",
+    "time_ms": 686.0,
+    "response": ""
+  },
+  {
+    "input": "退换货",
+    "time_ms": 666.0,
+    "response": ""
+  },
+  {
+    "input": "保修",
+    "time_ms": 866.3,
+    "response": ""
+  },
+  {
+    "input": "投诉",
+    "time_ms": 841.6,
+    "response": ""
+  },
+  {
+    "input": "人工客服",
+    "time_ms": 767.8,
+    "response": ""
+  },
+  {
+    "input": "那个东西",
+    "time_ms": 829.7,
+    "response": ""
+  },
+  {
+    "input": "之前说的",
+    "time_ms": 1026.0,
+    "response": ""
+  },
+  {
+    "input": "继续",
+    "time_ms": 763.0,
+    "response": ""
+  },
+  {
+    "input": "5000块以内的手机",
+    "time_ms": 733.6,
+    "response": ""
+  },
+  {
+    "input": "最便宜的笔记本",
+    "time_ms": 820.3,
+    "response": ""
+  },
+  {
+    "input": "太贵了",
+    "time_ms": 822.3,
+    "response": ""
+  },
+  {
+    "input": "不满意",
+    "time_ms": 942.3,
+    "response": ""
+  },
+  {
+    "input": "非常好",
+    "time_ms": 845.3,
+    "response": ""
+  }
+]

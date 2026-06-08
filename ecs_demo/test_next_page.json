@@ -1,0 +1,90 @@
+{
+  "page1": [
+    {
+      "recipient_id": "user002",
+      "text": "请选择订单（第1页/共5页（23个订单））",
+      "buttons": [
+        {
+          "title": "[已发货] 润唇膏×1, 婴儿背带×2",
+          "payload": "/SetSlots(order_id=ord64470dfa1c514904)"
+        },
+        {
+          "title": "[已完成] 粉底液×1",
+          "payload": "/SetSlots(order_id=ord861575dfc23a4e21)"
+        },
+        {
+          "title": "[已发货] 睫毛膏×1, 睫毛膏×1",
+          "payload": "/SetSlots(order_id=ordac5d9d2b6cbc4ab2)"
+        },
+        {
+          "title": "[待发货] 婴儿床×1, 保湿面霜×1",
+          "payload": "/SetSlots(order_id=ordf15d03d47ca14204)"
+        },
+        {
+          "title": "[待支付] 游戏鼠标×1",
+          "payload": "/SetSlots(order_id=ordcc1b7aec695e4ac6)"
+        },
+        {
+          "title": "查看更多 →",
+          "payload": "下一页"
+        },
+        {
+          "title": "返回",
+          "payload": "/SetSlots(order_id=false)"
+        }
+      ],
+      "image": null,
+      "custom": null
+    }
+  ],
+  "page2": [
+    {
+      "recipient_id": "user002",
+      "text": "请选择订单（第2页/共5页（23个订单））",
+      "buttons": [
+        {
+          "title": "[待支付] 防晒霜SPF50×5",
+          "payload": "/SetSlots(order_id=ordfcd91525b4354189)"
+        },
+        {
+          "title": "[已发货] 运动连帽卫衣×1, 女士牛仔裤×1",
+          "payload": "/SetSlots(order_id=ord2cdf40ce289f4168)"
+        },
+        {
+          "title": "[已完成] 眼影盘×2, 婴儿奶瓶×1",
+          "payload": "/SetSlots(order_id=ord6fdac7f69b314b07)"
+        },
+        {
+          "title": "[售后中] 英语学习教材×1",
+          "payload": "/SetSlots(order_id=orde23c90f7d3854186)"
+        },
+        {
+          "title": "[待支付] 男士西服套装×1",
+          "payload": "/SetSlots(order_id=ord7dc9c65953354383)"
+        },
+        {
+          "title": "查看更多 →",
+          "payload": "下一页"
+        },
+        {
+          "title": "← 上一页",
+          "payload": "上一页"
+        },
+        {
+          "title": "返回首页",
+          "payload": "第一页"
+        },
+        {
+          "title": "返回首页",
+          "payload": "/SetSlots(order_list_page=0)"
+        },
+        {
+          "title": "返回",
+          "payload": "/SetSlots(order_id=false)"
+        }
+      ],
+      "image": null,
+      "custom": null
+    }
+  ]
+}

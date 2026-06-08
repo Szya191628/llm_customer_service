@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-atguigu_ai 安装配置文件 (setup.py)
+app 安装配置文件 (setup.py)
 
 ================================================================================
 什么是 setup.py？
@@ -18,7 +18,7 @@ setup.py 是 Python 包的"安装说明书"，它告诉 pip：
     llm_customer_service_B/          <-- 项目根目录
     ├── setup.py                     <-- setup.py 放在这里！
     ├── requirements-atguigu.txt     <-- 依赖列表也放在这里
-    ├── atguigu_ai/                  <-- 要安装的 Python 包
+    ├── app/                  <-- 要安装的 Python 包
     │   ├── __init__.py
     │   ├── agent/
     │   ├── core/
@@ -27,8 +27,8 @@ setup.py 是 Python 包的"安装说明书"，它告诉 pip：
     └── ecs_demo/                    <-- 示例项目（不会被安装）
 
 关键原则：setup.py 必须放在"要安装的包"的父目录！
-- atguigu_ai/ 是我们要安装的包（里面有 __init__.py）
-- 所以 setup.py 放在 atguigu_ai/ 的父目录，即项目根目录
+- app/ 是我们要安装的包（里面有 __init__.py）
+- 所以 setup.py 放在 app/ 的父目录，即项目根目录
 
 ================================================================================
 如何使用？
@@ -51,7 +51,7 @@ pip install -e ".[dev]" -i https://pypi.tuna.tsinghua.edu.cn/simple
 安装后会发生什么？
 ================================================================================
 1. 依赖包会被自动安装（langchain、fastapi、openai 等）
-2. atguigu_ai 包会被注册到 Python 环境，可以在任何地方 import
+2. app 包会被注册到 Python 环境，可以在任何地方 import
 3. atguigu 命令会被注册到系统，可以在命令行直接使用：
    - atguigu init    # 初始化项目
    - atguigu train   # 训练模型
@@ -69,10 +69,10 @@ Q: 那个点 "." 是什么意思？
 A: 点表示"当前目录"，告诉 pip 在当前目录找 setup.py 进行安装。
 
 Q: 安装后怎么卸载？
-A: pip uninstall atguigu_ai
+A: pip uninstall app
 
 Q: 怎么查看是否安装成功？
-A: pip show atguigu_ai  或者  python -c "import atguigu_ai; print(atguigu_ai.__version__)"
+A: pip show app  或者  python -c "import app; print(app.__version__)"
 """
 
 from pathlib import Path
@@ -126,13 +126,13 @@ def read_requirements(filename: str) -> list:
 # 辅助函数：读取版本号
 # ============================================================================
 def read_version() -> str:
-    """从 atguigu_ai/__init__.py 读取版本号。
+    """从 app/__init__.py 读取版本号。
     
     为什么版本号定义在 __init__.py 而不是这里？
-    - 这样代码里可以通过 atguigu_ai.__version__ 获取版本
+    - 这样代码里可以通过 app.__version__ 获取版本
     - 版本号只需要维护一处，不会出现不一致
     """
-    init_path = Path(__file__).parent / "atguigu_ai" / "__init__.py"
+    init_path = Path(__file__).parent / "app" / "__init__.py"
     if not init_path.exists():
         return "0.1.0"
     
@@ -159,7 +159,7 @@ def read_long_description() -> str:
 # 依赖定义
 # ============================================================================
 
-# 核心依赖：运行 atguigu_ai 必须的包
+# 核心依赖：运行 app 必须的包
 # 从 requirements-atguigu.txt 文件读取
 install_requires = read_requirements("requirements-atguigu.txt")
 
@@ -185,7 +185,7 @@ setup(
     # ------------------------------------------------------------------------
     
     # 包名：安装后 import 用的名字，也是 pip install/uninstall 用的名字
-    name="atguigu_ai",
+    name="app",
     
     # 版本号：遵循语义化版本 (主版本.次版本.修订版本)
     version=read_version(),
@@ -212,14 +212,14 @@ setup(
     # ------------------------------------------------------------------------
     # find_packages() 会自动扫描目录，找到所有包含 __init__.py 的目录
     # 
-    # include: 只包含这些包（atguigu_ai 和它的所有子包）
+    # include: 只包含这些包（app 和它的所有子包）
     # exclude: 排除这些目录（测试、文档、参考代码等）
     #
     # 为什么要排除 reference 和 ecs_demo？
     # - reference/ 是参考源码，不是我们要发布的代码
     # - ecs_demo/ 是示例项目，用户需要单独创建自己的项目
     packages=find_packages(
-        include=["atguigu_ai", "atguigu_ai.*"],
+        include=["app", "app.*"],
         exclude=["tests", "tests.*", "docs", "docs.*", 
                  "reference", "reference.*", "ecs_demo", "ecs_demo.*"],
     ),
@@ -230,7 +230,7 @@ setup(
     # 默认只打包 .py 文件，如果包里有模板、配置文件等，需要显式声明
     include_package_data=True,
     package_data={
-        "atguigu_ai": [
+        "app": [
             "templates/**/*",  # 模板文件
             "data/**/*",       # 数据文件
         ],
@@ -257,13 +257,13 @@ setup(
     # ------------------------------------------------------------------------
     # 命令行入口点（CLI）
     # ------------------------------------------------------------------------
-    # 安装后会创建 atguigu 命令，执行时调用 atguigu_ai.cli 模块的 main 函数
+    # 安装后会创建 atguigu 命令，执行时调用 app.cli 模块的 main 函数
     # 
     # 格式："命令名=模块路径:函数名"
     # 安装后可以直接在终端运行：atguigu init / atguigu train / atguigu run
     entry_points={
         "console_scripts": [
-            "atguigu=atguigu_ai.cli:main",
+            "atguigu=app.cli:main",
         ],
     },
     

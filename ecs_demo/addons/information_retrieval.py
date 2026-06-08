@@ -40,8 +40,8 @@ from langchain_core.prompts import (
     HumanMessagePromptTemplate,
 )
 
-# 导入 atguigu_ai 基类
-from atguigu_ai.retrieval.base_retriever import InformationRetrieval, SearchResult
+# 导入 app 基类
+from app.retrieval.base_retriever import InformationRetrieval, SearchResult
 
 # 配置控制台日志
 logger = logging.getLogger("retrieval")

@@ -3,7 +3,7 @@
 售后相关Action
 
 实现退换货申请功能。
-适配atguigu_ai框架Action接口。
+适配app框架Action接口。
 """
 
 import logging
@@ -11,7 +11,7 @@ from typing import Any, Optional
 from datetime import datetime
 from uuid import uuid4
 
-from atguigu_ai.agent.actions import Action, ActionResult
+from app.agent.actions import Action, ActionResult
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # 订单模块Domain定义
-# 适配atguigu_ai框架，复刻参考实现
+# 适配app框架，复刻参考实现
 
 version: "3.1"
 
@@ -21,6 +21,17 @@ slots:
     type: text
     mappings:
       - type: controlled  # 从action中获取值
+
+  last_viewed_order_id:  # 最近查看的订单ID（用于上下文关联）
+    type: text
+    mappings:
+      - type: controlled
+
+  order_list_page:  # 订单列表页码（用于分页）
+    type: float
+    initial_value: 0
+    mappings:
+      - type: controlled
 
   # === 修改订单 ===
   receive_id:  # 收货信息ID

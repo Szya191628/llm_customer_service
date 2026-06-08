@@ -1,0 +1,1153 @@
+[
+  {
+    "file": "D:\\llm_customer_service\\app\\agent\\agent.py",
+    "classes": [
+      {
+        "name": "AgentConfig",
+        "bases": [],
+        "methods": [],
+        "line": 109
+      },
+      {
+        "name": "Agent",
+        "bases": [],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 147
+          },
+          {
+            "name": "handle_message_sync",
+            "line": 277
+          },
+          {
+            "name": "register_action",
+            "line": 317
+          },
+          {
+            "name": "load",
+            "line": 326
+          }
+        ],
+        "line": 130
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "__future__",
+      "importlib",
+      "importlib.util",
+      "inspect",
+      "logging",
+      "sys",
+      "dataclasses",
+      "pathlib",
+      "typing",
+      "app.agent.message_processor",
+      "app.agent.actions",
+      "app.agent.graph",
+      "app.core.tracker",
+      "app.core.domain",
+      "app.core.stores",
+      "app.dialogue_understanding.flow",
+      "app.dialogue_understanding.generator",
+      "app.dialogue_understanding.processor",
+      "app.policies",
+      "app.shared.yaml_loader",
+      "app.shared.config",
+      "asyncio",
+      "tempfile",
+      "app.training.model_storage",
+      "app.shared.config",
+      "app.policies",
+      "app.dialogue_understanding.generator",
+      "app.dialogue_understanding.generator",
+      "app.shared.llm",
+      "app.retrieval",
+      "app.nlg",
+      "app.shared.config",
+      "app.shared.llm"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\app\\agent\\actions.py",
+    "classes": [
+      {
+        "name": "ActionResult",
+        "bases": [],
+        "methods": [
+          {
+            "name": "add_response",
+            "line": 34
+          },
+          {
+            "name": "add_event",
+            "line": 40
+          }
+        ],
+        "line": 20
+      },
+      {
+        "name": "Action",
+        "bases": [
+          "Name(id='ABC', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 56
+          },
+          {
+            "name": "run_sync",
+            "line": 79
+          }
+        ],
+        "line": 47
+      },
+      {
+        "name": "ActionListen",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 107
+          }
+        ],
+        "line": 100
+      },
+      {
+        "name": "ActionRestart",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 127
+          }
+        ],
+        "line": 120
+      },
+      {
+        "name": "ActionSessionStart",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 151
+          }
+        ],
+        "line": 144
+      },
+      {
+        "name": "ActionDefaultFallback",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 178
+          }
+        ],
+        "line": 170
+      },
+      {
+        "name": "ActionChitChatResponse",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 210
+          }
+        ],
+        "line": 202
+      },
+      {
+        "name": "ActionCancelFlow",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 238
+          }
+        ],
+        "line": 231
+      },
+      {
+        "name": "ActionChangeFlow",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 269
+          }
+        ],
+        "line": 262
+      },
+      {
+        "name": "ActionCleanStack",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 307
+          }
+        ],
+        "line": 300
+      },
+      {
+        "name": "ActionExtractSlots",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 335
+          }
+        ],
+        "line": 328
+      },
+      {
+        "name": "ActionSendText",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 425
+          }
+        ],
+        "line": 418
+      },
+      {
+        "name": "ActionHandleHelp",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 451
+          }
+        ],
+        "line": 444
+      },
+      {
+        "name": "ActionClarify",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 482
+          }
+        ],
+        "line": 474
+      },
+      {
+        "name": "ActionHumanHandoff",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 525
+          }
+        ],
+        "line": 515
+      },
+      {
+        "name": "ActionTriggerSearch",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 558
+          }
+        ],
+        "line": 549
+      },
+      {
+        "name": "ActionFlowCompleted",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 594
+          }
+        ],
+        "line": 584
+      },
+      {
+        "name": "ActionUtter",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 624
+          },
+          {
+            "name": "name",
+            "line": 633
+          }
+        ],
+        "line": 618
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "__future__",
+      "abc",
+      "dataclasses",
+      "typing",
+      "app.core.tracker",
+      "app.core.domain",
+      "asyncio",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.shared.llm",
+      "random",
+      "json"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\app\\agent\\graph\\builder.py",
+    "classes": [],
+    "functions": [
+      {
+        "name": "build_message_processing_graph",
+        "line": 37
+      },
+      {
+        "name": "get_message_processing_graph",
+        "line": 109
+      },
+      {
+        "name": "reset_graph_instance",
+        "line": 125
+      }
+    ],
+    "imports": [
+      "__future__",
+      "logging",
+      "typing",
+      "langgraph.graph",
+      "langgraph.graph.state",
+      "app.agent.graph.state",
+      "app.agent.graph.nodes",
+      "app.agent.graph.edges",
+      "app.dialogue_understanding.generator",
+      "app.dialogue_understanding.processor",
+      "app.policies"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\app\\core\\tracker.py",
+    "classes": [
+      {
+        "name": "UserMessage",
+        "bases": [],
+        "methods": [
+          {
+            "name": "to_dict",
+            "line": 43
+          },
+          {
+            "name": "from_dict",
+            "line": 54
+          }
+        ],
+        "line": 25
+      },
+      {
+        "name": "BotMessage",
+        "bases": [],
+        "methods": [
+          {
+            "name": "to_dict",
+            "line": 82
+          },
+          {
+            "name": "from_dict",
+            "line": 92
+          }
+        ],
+        "line": 66
+      },
+      {
+        "name": "DialogueTurn",
+        "bases": [],
+        "methods": [
+          {
+            "name": "to_dict",
+            "line": 121
+          }
+        ],
+        "line": 103
+      },
+      {
+        "name": "DialogueStateTracker",
+        "bases": [],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 157
+          },
+          {
+            "name": "active_flow",
+            "line": 197
+          },
+          {
+            "name": "update_with_message",
+            "line": 202
+          },
+          {
+            "name": "add_bot_message",
+            "line": 221
+          },
+          {
+            "name": "set_slot",
+            "line": 233
+          },
+          {
+            "name": "get_slot",
+            "line": 255
+          },
+          {
+            "name": "get_all_slots",
+            "line": 267
+          },
+          {
+            "name": "reset_slots",
+            "line": 275
+          },
+          {
+            "name": "set_latest_action",
+            "line": 281
+          },
+          {
+            "name": "add_commands",
+            "line": 292
+          },
+          {
+            "name": "start_flow",
+            "line": 304
+          },
+          {
+            "name": "end_flow",
+            "line": 325
+          },
+          {
+            "name": "cancel_flow",
+            "line": 355
+          },
+          {
+            "name": "record_pattern",
+            "line": 363
+          },
+          {
+            "name": "get_conversation_history",
+            "line": 383
+          },
+          {
+            "name": "get_messages_for_llm",
+            "line": 404
+          },
+          {
+            "name": "_save_current_turn",
+            "line": 444
+          },
+          {
+            "name": "finalize_turn",
+            "line": 455
+          },
+          {
+            "name": "restart",
+            "line": 460
+          },
+          {
+            "name": "current_state",
+            "line": 472
+          },
+          {
+            "name": "to_dict",
+            "line": 491
+          },
+          {
+            "name": "from_dict",
+            "line": 516
+          },
+          {
+            "name": "copy",
+            "line": 580
+          },
+          {
+            "name": "__repr__",
+            "line": 588
+          }
+        ],
+        "line": 132
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "time",
+      "dataclasses",
+      "typing",
+      "copy",
+      "app.shared.constants",
+      "app.core.slots",
+      "app.dialogue_understanding.stack.dialogue_stack",
+      "app.dialogue_understanding.stack.stack_frame"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\app\\core\\domain.py",
+    "classes": [
+      {
+        "name": "ResponseTemplate",
+        "bases": [],
+        "methods": [
+          {
+            "name": "from_dict",
+            "line": 48
+          },
+          {
+            "name": "to_dict",
+            "line": 63
+          }
+        ],
+        "line": 26
+      },
+      {
+        "name": "Domain",
+        "bases": [],
+        "methods": [
+          {
+            "name": "__post_init__",
+            "line": 112
+          },
+          {
+            "name": "_add_default_actions",
+            "line": 116
+          },
+          {
+            "name": "load",
+            "line": 127
+          },
+          {
+            "name": "from_dict",
+            "line": 164
+          },
+          {
+            "name": "to_dict",
+            "line": 233
+          },
+          {
+            "name": "get_slot",
+            "line": 248
+          },
+          {
+            "name": "get_response",
+            "line": 259
+          },
+          {
+            "name": "has_action",
+            "line": 270
+          },
+          {
+            "name": "has_flow",
+            "line": 281
+          },
+          {
+            "name": "add_slot",
+            "line": 292
+          },
+          {
+            "name": "add_action",
+            "line": 296
+          },
+          {
+            "name": "add_response",
+            "line": 300
+          },
+          {
+            "name": "merge",
+            "line": 308
+          },
+          {
+            "name": "__repr__",
+            "line": 338
+          }
+        ],
+        "line": 86
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "dataclasses",
+      "pathlib",
+      "typing",
+      "app.shared.constants",
+      "app.shared.exceptions",
+      "app.shared.yaml_loader",
+      "app.core.slots"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\app\\dialogue_understanding\\generator\\llm_generator.py",
+    "classes": [
+      {
+        "name": "LLMGeneratorConfig",
+        "bases": [
+          "Name(id='GeneratorConfig', ctx=Load())"
+        ],
+        "methods": [],
+        "line": 42
+      },
+      {
+        "name": "LLMCommandGenerator",
+        "bases": [
+          "Name(id='CommandGenerator', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 76
+          },
+          {
+            "name": "llm_client",
+            "line": 110
+          },
+          {
+            "name": "_format_messages_for_log",
+            "line": 204
+          },
+          {
+            "name": "from_config",
+            "line": 217
+          }
+        ],
+        "line": 65
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "__future__",
+      "logging",
+      "dataclasses",
+      "typing",
+      "app.dialogue_understanding.generator.base_generator",
+      "app.dialogue_understanding.generator.prompt_builder",
+      "app.dialogue_understanding.generator.command_parser",
+      "app.dialogue_understanding.commands.answer_commands",
+      "app.dialogue_understanding.commands.error_commands",
+      "app.shared.llm",
+      "app.shared.llm.base_client",
+      "app.shared.exceptions",
+      "app.core.tracker",
+      "app.core.domain",
+      "app.dialogue_understanding.commands.base"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\app\\dialogue_understanding\\processor\\command_processor.py",
+    "classes": [
+      {
+        "name": "ProcessorConfig",
+        "bases": [],
+        "methods": [],
+        "line": 48
+      },
+      {
+        "name": "ProcessResult",
+        "bases": [],
+        "methods": [
+          {
+            "name": "success",
+            "line": 80
+          }
+        ],
+        "line": 62
+      },
+      {
+        "name": "CommandProcessor",
+        "bases": [],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 97
+          },
+          {
+            "name": "process",
+            "line": 117
+          },
+          {
+            "name": "_execute_command",
+            "line": 166
+          },
+          {
+            "name": "_update_response_type",
+            "line": 188
+          },
+          {
+            "name": "_determine_next_action",
+            "line": 222
+          },
+          {
+            "name": "validate_command",
+            "line": 285
+          },
+          {
+            "name": "filter_valid_commands",
+            "line": 306
+          },
+          {
+            "name": "_get_current_slot_to_collect",
+            "line": 317
+          },
+          {
+            "name": "_filter_commands_during_collect",
+            "line": 340
+          },
+          {
+            "name": "set_domain",
+            "line": 390
+          },
+          {
+            "name": "set_flows",
+            "line": 398
+          }
+        ],
+        "line": 85
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "__future__",
+      "logging",
+      "dataclasses",
+      "typing",
+      "app.dialogue_understanding.commands.base",
+      "app.dialogue_understanding.commands.flow_commands",
+      "app.dialogue_understanding.commands.slot_commands",
+      "app.dialogue_understanding.commands.answer_commands",
+      "app.dialogue_understanding.commands.session_commands",
+      "app.dialogue_understanding.stack.dialogue_stack",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.core.tracker",
+      "app.core.domain"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\app\\policies\\enterprise_search_policy.py",
+    "classes": [
+      {
+        "name": "_InternalRetrievalConfig",
+        "bases": [],
+        "methods": [],
+        "line": 30
+      },
+      {
+        "name": "EnterpriseSearchPolicyConfig",
+        "bases": [
+          "Name(id='PolicyConfig', ctx=Load())"
+        ],
+        "methods": [],
+        "line": 38
+      },
+      {
+        "name": "EnterpriseSearchPolicy",
+        "bases": [
+          "Name(id='Policy', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "__init__",
+            "line": 110
+          },
+          {
+            "name": "llm_client",
+            "line": 132
+          },
+          {
+            "name": "does_support_stack_frame",
+            "line": 142
+          },
+          {
+            "name": "set_retriever",
+            "line": 594
+          }
+        ],
+        "line": 60
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "__future__",
+      "logging",
+      "dataclasses",
+      "typing",
+      "app.policies.base_policy",
+      "app.shared.constants",
+      "app.shared.llm",
+      "app.shared.llm.base_client",
+      "app.retrieval.base_retriever",
+      "app.core.tracker",
+      "app.core.domain",
+      "app.dialogue_understanding.flow",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.dialogue_understanding.stack.stack_frame",
+      "app.dialogue_understanding.stack.stack_frame",
+      "random",
+      "random",
+      "random"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\ecs_demo\\actions\\action_order.py",
+    "classes": [
+      {
+        "name": "ActionAskOrderId",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 32
+          },
+          {
+            "name": "_get_query_condition",
+            "line": 206
+          }
+        ],
+        "line": 19
+      },
+      {
+        "name": "ActionGetOrderDetail",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 267
+          }
+        ],
+        "line": 263
+      },
+      {
+        "name": "ActionAskReceiveId",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 424
+          }
+        ],
+        "line": 417
+      },
+      {
+        "name": "ActionAskReceiveProvince",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 499
+          }
+        ],
+        "line": 495
+      },
+      {
+        "name": "ActionAskReceiveCity",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 537
+          }
+        ],
+        "line": 533
+      },
+      {
+        "name": "ActionAskReceiveDistrict",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 578
+          }
+        ],
+        "line": 574
+      },
+      {
+        "name": "ActionAskSetReceiveInfo",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 626
+          }
+        ],
+        "line": 618
+      },
+      {
+        "name": "ActionCancelOrder",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 746
+          }
+        ],
+        "line": 742
+      },
+      {
+        "name": "ActionUrgeShipping",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 805
+          }
+        ],
+        "line": 797
+      },
+      {
+        "name": "ActionConfirmReceipt",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 865
+          }
+        ],
+        "line": 857
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "logging",
+      "datetime",
+      "typing",
+      "app.agent.actions",
+      "actions.db",
+      "actions.db_table_class",
+      "sqlalchemy.orm",
+      "sqlalchemy",
+      "actions.db_table_class",
+      "sqlalchemy",
+      "actions.db",
+      "actions.db_table_class",
+      "sqlalchemy.orm",
+      "sqlalchemy",
+      "actions.db",
+      "actions.db_table_class",
+      "actions.db",
+      "actions.db_table_class",
+      "actions.db",
+      "actions.db_table_class",
+      "actions.db",
+      "actions.db_table_class",
+      "actions.db",
+      "actions.db_table_class",
+      "uuid",
+      "actions.db",
+      "actions.db_table_class",
+      "actions.db",
+      "actions.db_table_class",
+      "actions.db",
+      "actions.db_table_class"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\ecs_demo\\actions\\action_logistics.py",
+    "classes": [
+      {
+        "name": "ActionGetLogisticsCompanys",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 21
+          }
+        ],
+        "line": 17
+      },
+      {
+        "name": "ActionGetLogisticsInfo",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 60
+          }
+        ],
+        "line": 56
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "logging",
+      "typing",
+      "app.agent.actions",
+      "actions.db",
+      "actions.db_table_class",
+      "actions.db",
+      "actions.db_table_class",
+      "sqlalchemy.orm"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\ecs_demo\\actions\\action_postsale.py",
+    "classes": [
+      {
+        "name": "ActionAskOrderIdAfterDelivered",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 23
+          }
+        ],
+        "line": 19
+      },
+      {
+        "name": "ActionCheckPostsaleEligible",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 87
+          }
+        ],
+        "line": 83
+      },
+      {
+        "name": "ActionAskPostsaleReason",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 153
+          }
+        ],
+        "line": 149
+      },
+      {
+        "name": "ActionApplyPostsale",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 221
+          }
+        ],
+        "line": 217
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "logging",
+      "typing",
+      "datetime",
+      "uuid",
+      "app.agent.actions",
+      "actions.db",
+      "actions.db_table_class",
+      "sqlalchemy.orm",
+      "actions.db",
+      "actions.db_table_class",
+      "sqlalchemy.orm",
+      "actions.db",
+      "actions.db_table_class",
+      "sqlalchemy",
+      "sqlalchemy.orm",
+      "actions.db",
+      "actions.db_table_class",
+      "sqlalchemy.orm"
+    ]
+  },
+  {
+    "file": "D:\\llm_customer_service\\ecs_demo\\actions\\action_faq.py",
+    "classes": [
+      {
+        "name": "ActionFAQ",
+        "bases": [
+          "Name(id='Action', ctx=Load())"
+        ],
+        "methods": [
+          {
+            "name": "name",
+            "line": 96
+          }
+        ],
+        "line": 88
+      }
+    ],
+    "functions": [],
+    "imports": [
+      "logging",
+      "pathlib",
+      "typing",
+      "yaml",
+      "app.agent.actions"
+    ]
+  }
+]

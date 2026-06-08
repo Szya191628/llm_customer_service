@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # 售后Flow定义
-# 适配atguigu_ai框架语法
+# 适配app框架语法
 
 version: "3.1"
 

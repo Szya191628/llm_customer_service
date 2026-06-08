@@ -3,7 +3,7 @@
 订单相关Action
 
 实现订单查询、修改收货信息、取消订单等功能。
-适配atguigu_ai框架Action接口。
+适配app框架Action接口。
 使用 goto 槽机制统一订单查询逻辑。
 """
 
@@ -11,7 +11,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from atguigu_ai.agent.actions import Action, ActionResult
+from app.agent.actions import Action, ActionResult
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +46,35 @@ class ActionAskOrderId(Action):
         result = ActionResult()
         user_id = tracker.get_slot("user_id") or "1001"
         goto = tracker.get_slot("goto")
-        
+        last_viewed_order_id = tracker.get_slot("last_viewed_order_id")
+        page = int(tracker.get_slot("order_list_page") or 0)
+
+        # 每页显示数量
+        PAGE_SIZE = 5
+
+        # 检查是否是分页请求
+        latest_message = ""
+        if tracker.latest_message:
+            latest_message = tracker.latest_message.text
+
+        is_pagination_request = False
+        if "下一页" in latest_message:
+            page = page + 1
+            tracker.set_slot("order_list_page", page)
+            is_pagination_request = True
+        elif "上一页" in latest_message:
+            page = max(0, page - 1)
+            tracker.set_slot("order_list_page", page)
+            is_pagination_request = True
+        elif "第一页" in latest_message or "首页" in latest_message:
+            page = 0
+            tracker.set_slot("order_list_page", page)
+            is_pagination_request = True
+
+        # 如果是分页请求，清除 order_id 以避免误判
+        if is_pagination_request:
+            tracker.set_slot("order_id", None)
+
         try:
             with SessionLocal() as session:
                 # 根据 goto 值构建查询条件
@@ -61,8 +89,36 @@ class ActionAskOrderId(Action):
                     .all()
                 )
                 
+                # 上下文关联：如果最近查看的订单在查询结果中，优先使用
+                if last_viewed_order_id and last_viewed_order_id != "false":
+                    matching_order = next(
+                        (o for o in order_infos if o.order_id == last_viewed_order_id),
+                        None
+                    )
+                    if matching_order:
+                        # 自动选择最近查看的订单，跳过选择步骤
+                        tracker.set_slot("order_id", matching_order.order_id)
+                        sku_summary = ", ".join([
+                            f"{od.sku_name}×{od.sku_count}"
+                            for od in matching_order.order_detail[:2]
+                        ])
+                        if len(matching_order.order_detail) > 2:
+                            sku_summary += f" 等{len(matching_order.order_detail)}件"
+
+                        message = [
+                            f"已自动选择最近查看的订单：",
+                            f"[{matching_order.order_status}] {sku_summary}",
+                            f"订单ID：{matching_order.order_id}",
+                        ]
+                        buttons = [
+                            {"title": "确认", "payload": f"/SetSlots(order_id={matching_order.order_id})"},
+                            {"title": "重新选择", "payload": "/SetSlots(order_id=false)"},
+                        ]
+                        result.add_response("\n".join(message), buttons=buttons)
+                        return result
+
                 order_nums = len(order_infos)
-                
+
                 # 没有订单
                 if order_nums == 0:
                     result.add_response("暂无订单")
@@ -70,17 +126,18 @@ class ActionAskOrderId(Action):
                     # 设置 action_listen_rejected 标记，打断流程
                     result.reject_action_listen = True
                     return result
-                
-                # 只有一个订单
+
+                # 只有一个订单，自动选择
                 if order_nums == 1:
                     order_info = order_infos[0]
+                    # 自动设置订单ID，跳过选择步骤
+                    tracker.set_slot("order_id", order_info.order_id)
                     message = [
-                        "查找到一个订单",
                         f"[{order_info.order_status}]**订单ID**：{order_info.order_id}",
                     ]
                     for order_detail in order_info.order_detail:
                         message.append(f"- {order_detail.sku_name} × {order_detail.sku_count}")
-                    
+
                     buttons = [
                         {
                             "title": "确认",
@@ -89,24 +146,56 @@ class ActionAskOrderId(Action):
                         {"title": "返回", "payload": "/SetSlots(order_id=false)"},
                     ]
                     result.add_response("\n".join(message), buttons=buttons)
-                
-                # 多个订单
+
+                # 多个订单，分页显示
                 else:
+                    # 计算分页
+                    start_idx = page * PAGE_SIZE
+                    end_idx = start_idx + PAGE_SIZE
+                    display_orders = order_infos[start_idx:end_idx]
+                    total_pages = (order_nums + PAGE_SIZE - 1) // PAGE_SIZE
+
                     buttons = []
-                    for order_info in order_infos:
-                        title_parts = [
-                            f"[{order_info.order_status}]订单ID：{order_info.order_id}",
-                        ]
-                        for order_detail in order_info.order_detail:
-                            title_parts.append(f"- {order_detail.sku_name} × {order_detail.sku_count}")
-                        
+                    for order_info in display_orders:
+                        # 简化显示：状态 + 商品摘要
+                        sku_summary = ", ".join([
+                            f"{od.sku_name}×{od.sku_count}"
+                            for od in order_info.order_detail[:2]  # 最多显示2个商品
+                        ])
+                        if len(order_info.order_detail) > 2:
+                            sku_summary += f" 等{len(order_info.order_detail)}件"
+
                         buttons.append({
-                            "title": "\n".join(title_parts),
+                            "title": f"[{order_info.order_status}] {sku_summary}",
                             "payload": f"/SetSlots(order_id={order_info.order_id})",
                         })
-                    
+
+                    # 分页提示
+                    page_info = f"第{page + 1}页/共{total_pages}页（{order_nums}个订单）"
+
+                    # 添加"查看更多"按钮（如果不是最后一页）
+                    if end_idx < order_nums:
+                        buttons.append({
+                            "title": "查看更多 →",
+                            "payload": "下一页",
+                        })
+
+                    # 添加"返回上一页"按钮（如果不是第一页）
+                    if page > 0:
+                        buttons.append({
+                            "title": "← 上一页",
+                            "payload": "上一页",
+                        })
+
+                    # 添加"返回首页"按钮（如果不是第一页）
+                    if page > 0:
+                        buttons.append({
+                            "title": "返回首页",
+                            "payload": "第一页",
+                        })
+
                     buttons.append({"title": "返回", "payload": "/SetSlots(order_id=false)"})
-                    result.add_response("请选择订单", buttons=buttons)
+                    result.add_response(f"请选择订单（{page_info}）", buttons=buttons)
                     
         except Exception as e:
             logger.error(f"查询订单失败: {e}")
@@ -212,9 +301,12 @@ class ActionGetOrderDetail(Action):
                     result.add_response("未找到该订单，请检查订单号是否正确。")
                     return result
                 
+                # 保存最近查看的订单ID（用于上下文关联）
+                tracker.set_slot("last_viewed_order_id", order_info.order_id)
+
                 # 拼接订单信息
                 message = [f"- [{order_info.order_status}]**订单ID**：{order_info.order_id}"]
-                
+
                 # 时间信息
                 for k, v in {
                     "创建时间": order_info.create_time,
@@ -694,9 +786,132 @@ class ActionCancelOrder(Action):
             
             result.add_response(message)
             logger.info(f"订单 {order_id} 已取消，原状态: {old_order_status}")
-            
+
         except Exception as e:
             logger.error(f"取消订单失败: {e}")
             result.add_response("取消失败，请稍后重试。")
-        
+
+        return result
+
+
+class ActionUrgeShipping(Action):
+    """
+    催发货 Action
+
+    对待发货订单发送催促通知。
+    """
+
+    @property
+    def name(self) -> str:
+        return "action_urge_shipping"
+
+    async def run(
+        self,
+        tracker: Any,
+        domain: Optional[Any] = None,
+        **kwargs: Any,
+    ) -> ActionResult:
+        from actions.db import SessionLocal
+        from actions.db_table_class import OrderInfo
+
+        result = ActionResult()
+        order_id = tracker.get_slot("order_id")
+
+        if not order_id:
+            result.add_response("订单信息丢失，请重新操作。")
+            return result
+
+        try:
+            with SessionLocal() as session:
+                order_info = session.query(OrderInfo).filter_by(order_id=order_id).first()
+
+                if not order_info:
+                    result.add_response("未找到该订单，请检查订单号是否正确。")
+                    return result
+
+                # 检查订单状态
+                if order_info.order_status != "待发货":
+                    result.add_response(f"该订单状态为[{order_info.order_status}]，只有待发货订单才能催发货。")
+                    return result
+
+                # 模拟催发货操作（实际项目中会发送通知给商家）
+                # 这里只是记录催发货请求
+                message = [
+                    f"✅ 催发货请求已提交",
+                    f"",
+                    f"订单ID：{order_id}",
+                    f"我们会尽快通知商家发货，请耐心等待。",
+                    f"",
+                    f"如需进一步帮助，请联系人工客服。",
+                ]
+                result.add_response("\n".join(message))
+                logger.info(f"催发货请求已提交: {order_id}")
+
+        except Exception as e:
+            logger.error(f"催发货失败: {e}")
+            result.add_response("催发货请求提交失败，请稍后重试。")
+
+        return result
+
+
+class ActionConfirmReceipt(Action):
+    """
+    确认收货 Action
+
+    对已发货订单确认收货。
+    """
+
+    @property
+    def name(self) -> str:
+        return "action_confirm_receipt"
+
+    async def run(
+        self,
+        tracker: Any,
+        domain: Optional[Any] = None,
+        **kwargs: Any,
+    ) -> ActionResult:
+        from actions.db import SessionLocal
+        from actions.db_table_class import OrderInfo
+
+        result = ActionResult()
+        order_id = tracker.get_slot("order_id")
+
+        if not order_id:
+            result.add_response("订单信息丢失，请重新操作。")
+            return result
+
+        try:
+            with SessionLocal() as session:
+                order_info = session.query(OrderInfo).filter_by(order_id=order_id).first()
+
+                if not order_info:
+                    result.add_response("未找到该订单，请检查订单号是否正确。")
+                    return result
+
+                # 检查订单状态
+                if order_info.order_status != "已发货":
+                    result.add_response(f"该订单状态为[{order_info.order_status}]，只有已发货订单才能确认收货。")
+                    return result
+
+                # 更新订单状态为已签收
+                order_info.order_status = "已签收"
+                order_info.delivered_time = datetime.now()
+                session.commit()
+
+                message = [
+                    f"✅ 已确认收货",
+                    f"",
+                    f"订单ID：{order_id}",
+                    f"感谢您的购买！如有问题，可在15天内申请售后。",
+                    f"",
+                    f"期待您的评价！",
+                ]
+                result.add_response("\n".join(message))
+                logger.info(f"订单 {order_id} 已确认收货")
+
+        except Exception as e:
+            logger.error(f"确认收货失败: {e}")
+            result.add_response("确认收货失败，请稍后重试。")
+
         return result

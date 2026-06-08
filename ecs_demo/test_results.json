@@ -1,0 +1,44 @@
+[
+  {
+    "input": "小米手机",
+    "status": 200,
+    "time_ms": 2523.9,
+    "response": [
+      {
+        "recipient_id": "test_user",
+        "text": "你好！你喜欢小米手机吗？它有很多不错的型号呢！😊",
+        "buttons": null,
+        "image": null,
+        "custom": null
+      }
+    ]
+  },
+  {
+    "input": "你好",
+    "status": 200,
+    "time_ms": 3253.4,
+    "response": [
+      {
+        "recipient_id": "test_user",
+        "text": "你好！很高兴见到你！😊",
+        "buttons": null,
+        "image": null,
+        "custom": null
+      }
+    ]
+  },
+  {
+    "input": "华为显示器",
+    "status": 200,
+    "time_ms": 2899.1,
+    "response": [
+      {
+        "recipient_id": "test_user",
+        "text": "你好！华为的显示器以高质量和良好的用户体验著称，你对哪方面感兴趣呢？😊",
+        "buttons": null,
+        "image": null,
+        "custom": null
+      }
+    ]
+  }
+]

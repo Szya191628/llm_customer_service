@@ -3,13 +3,13 @@
 物流相关Action
 
 实现物流查询功能。
-适配atguigu_ai框架Action接口，复刻参考实现。
+适配app框架Action接口，复刻参考实现。
 """
 
 import logging
 from typing import Any, Optional
 
-from atguigu_ai.agent.actions import Action, ActionResult
+from app.agent.actions import Action, ActionResult
 
 logger = logging.getLogger(__name__)
 

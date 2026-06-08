@@ -2,7 +2,7 @@
 """
 电商客服Demo Actions模块
 
-导出所有自定义Action供atguigu_ai框架使用。
+导出所有自定义Action供app框架使用。
 """
 
 from .action_order import (
@@ -14,6 +14,8 @@ from .action_order import (
     ActionAskReceiveDistrict,
     ActionAskSetReceiveInfo,
     ActionCancelOrder,
+    ActionUrgeShipping,
+    ActionConfirmReceipt,
 )
 from .action_logistics import (
     ActionGetLogisticsCompanys,
@@ -25,6 +27,7 @@ from .action_postsale import (
     ActionAskPostsaleReason,
     ActionApplyPostsale,
 )
+from .action_faq import ActionFAQ
 
 # 导出所有Action类
 __all__ = [
@@ -37,6 +40,8 @@ __all__ = [
     "ActionAskReceiveDistrict",
     "ActionAskSetReceiveInfo",
     "ActionCancelOrder",
+    "ActionUrgeShipping",
+    "ActionConfirmReceipt",
     # 物流相关
     "ActionGetLogisticsCompanys",
     "ActionGetLogisticsInfo",
@@ -45,4 +50,6 @@ __all__ = [
     "ActionCheckPostsaleEligible",
     "ActionAskPostsaleReason",
     "ActionApplyPostsale",
+    # FAQ相关
+    "ActionFAQ",
 ]

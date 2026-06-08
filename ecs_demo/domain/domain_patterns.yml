@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # 通用Pattern定义
-# 适配atguigu_ai框架
+# 适配app框架
 
 version: "3.1"
 
