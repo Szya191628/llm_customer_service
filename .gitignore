@@ -1,0 +1,85 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Data files (large)
+*.dump
+*.sql
+*.db
+
+# Model files
+models/*.bin
+models/*.pt
+models/*.pth
+models/*.onnx
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+
+# Tracker files
+trackers/
+
+# Model files (all sizes, all subdirectories)
+**/models/**/*.bin
+**/models/**/*.pt
+**/models/**/*.pth
+**/models/**/*.onnx
+**/models/**/config.json
+**/models/**/tokenizer*
+**/models/**/vocab*
+**/models/**/special_tokens_map*
+**/models/**/added_tokens.json
+
+# Large data
+*.csv
+*.parquet
+*.arrow
